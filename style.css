@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  padding: 30px;
+  text-align: center;
+}
+
+.container {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  margin: 10px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #007BFF;
+  color: white;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.correct {
+  background-color: #28a745 !important;
+}
+
+.incorrect {
+  background-color: #dc3545 !important;
+}
+
+.question-box {
+  margin: 20px 0;
+}
