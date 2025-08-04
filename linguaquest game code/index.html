@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>XP and Lives System</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #feedback {
+      font-size: 48px;
+      margin: 20px;
+      height: 60px;
+    }
+    .green { color: green; }
+    .red { color: red; }
+    .heart {
+      font-size: 24px;
+      color: red;
+    }
+    #restartBtn {
+      margin-top: 20px;
+      padding: 8px 16px;
+      font-size: 16px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>XP: <span id="xp">0</span></h1>
+  <div>Hearts: <span id="hearts">❤️❤️❤️</span></div>
+  <div id="feedback"></div>
+
+  <button id="correctBtn" onclick="handleCorrect()">Correct (✓)</button>
+  <button id="wrongBtn" onclick="handleWrong()">Wrong (✗)</button>
+  <br>
+  <button id="restartBtn" onclick="restartGame()">🔁 Restart Game</button>
+
+  <!-- Use your local audio files here -->
+  <audio id="successSound" src="correct-38597.mp3" preload="auto"></audio>
+  <audio id="failSound" src="error.mp3" preload="auto"></audio>
+
+  <script>
+    let xp = 0;
+    let lives = 3;
+    let gameOver = false;
+
+    const xpDisplay = document.getElementById('xp');
+    const heartsDisplay = document.getElementById('hearts');
+    const feedback = document.getElementById('feedback');
+    const successSound = document.getElementById('successSound');
+    const failSound = document.getElementById('failSound');
+    const correctBtn = document.getElementById('correctBtn');
+    const wrongBtn = document.getElementById('wrongBtn');
+    const restartBtn = document.getElementById('restartBtn');
+
+    function updateHearts() {
+      heartsDisplay.textContent = '❤️'.repeat(lives);
+    }
+
+    function showFeedback(symbol, className) {
+      feedback.textContent = symbol;
+      feedback.className = className;
+
+      // Only auto-clear ✓ or ✗, but not Game Over
+      if (!gameOver) {
+        setTimeout(() => {
+          feedback.textContent = '';
+          feedback.className = '';
+        }, 1000);
+      }
+    }
+
+    function handleCorrect() {
+      if (gameOver) return;
+
+      xp += 10;
+      xpDisplay.textContent = xp;
+      successSound.currentTime = 0;
+      successSound.play();
+      showFeedback('✓', 'green');
+    }
+
+    function handleWrong() {
+      if (gameOver) return;
+
+      if (lives > 0) {
+        lives--;
+        updateHearts();
+        failSound.currentTime = 0;
+        failSound.play();
+        showFeedback('✗', 'red');
+      }
+
+      if (lives === 0) {
+        endGame();
+      }
+    }
+
+    function endGame() {
+      gameOver = true;
+      feedback.textContent = '💀 Game Over';
+      feedback.className = 'red';
+      correctBtn.disabled = true;
+      wrongBtn.disabled = true;
+      restartBtn.style.display = 'inline-block';
+    }
+
+    function restartGame() {
+      xp = 0;
+      lives = 3;
+      gameOver = false;
+
+      xpDisplay.textContent = xp;
+      updateHearts();
+
+      feedback.textContent = '';
+      feedback.className = '';
+
+      correctBtn.disabled = false;
+      wrongBtn.disabled = false;
+      restartBtn.style.display = 'none';
+    }
+
+    // Initialize hearts on load
+    updateHearts();
+  </script>
+</body>
+</html>
