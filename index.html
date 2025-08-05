@@ -2,25 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>LinguaQuest - Learn German</title>
+  <title>LinguaQuest</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>LinguaQuest 🇩🇪</h1>
+  <h1>🇩🇪 LinguaQuest - Learn German</h1>
 
-    <label for="lessonSelect">Choose a lesson:</label>
-    <select id="lessonSelect">
-      <option value="lesson1">Lesson 1</option>
-      <option value="lesson2">Lesson 2</option>
-    </select>
-
-    <div id="questionContainer" class="question-box"></div>
-
-    <button id="nextBtn">Next</button>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="loadLesson('lesson1')">Lesson 1</button>
+    <button class="tab-btn locked" id="lesson2-btn" onclick="loadLesson('lesson2')" disabled>Lesson 2 🔒</button>
   </div>
 
+  <div id="lessonContainer">
+    <p>Loading lesson...</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

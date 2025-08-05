@@ -1,120 +1,198 @@
 const lessons = {
   lesson1: [
     {
-      type: 'mcq',
-      question: "What does 'Guten Morgen' mean?",
-      options: ['Good Night', 'Good Morning', 'Goodbye', 'Thank you'],
-      answer: 'Good Morning'
+      type: "mcq",
+      question: "What does 'Hallo' mean?",
+      options: ["Hello", "Goodbye", "Please", "Thank you"],
+      answer: "Hello"
     },
     {
-      type: 'fill',
-      question: "Translate to German: Hello",
-      answer: 'Hallo'
+      type: "fill",
+      question: "Translate 'Good morning' to German",
+      answer: "Guten Morgen"
     },
     {
-      type: 'mcq',
+      type: "mcq",
+      question: "What is the German word for 'Thank you'?",
+      options: ["Bitte", "Danke", "Hallo", "Tschüss"],
+      answer: "Danke"
+    },
+    {
+      type: "fill",
+      question: "Translate 'Yes' to German",
+      answer: "Ja"
+    },
+    {
+      type: "mcq",
       question: "What does 'Tschüss' mean?",
-      options: ['Bye', 'Hi', 'Yes', 'No'],
-      answer: 'Bye'
+      options: ["Goodbye", "Hello", "Please", "Good night"],
+      answer: "Goodbye"
     },
     {
-      type: 'fill',
-      question: "Fill in the blank: Guten ____ (Evening)",
-      answer: 'Abend'
+      type: "fill",
+      question: "Translate 'No' to German",
+      answer: "Nein"
     },
     {
-      type: 'mcq',
-      question: "'Danke' means?",
-      options: ['Please', 'Sorry', 'Thanks', 'Hi'],
-      answer: 'Thanks'
+      type: "mcq",
+      question: "What is the German word for 'Please'?",
+      options: ["Danke", "Bitte", "Hallo", "Nein"],
+      answer: "Bitte"
+    },
+    {
+      type: "fill",
+      question: "Translate 'My name is' to German",
+      answer: "Ich heiße"
+    },
+    {
+      type: "mcq",
+      question: "What does 'Guten Abend' mean?",
+      options: ["Good evening", "Good morning", "Goodbye", "Hello"],
+      answer: "Good evening"
+    },
+    {
+      type: "fill",
+      question: "Translate 'Good night' to German",
+      answer: "Gute Nacht"
     }
   ],
   lesson2: [
     {
-      type: 'fill',
-      question: "Translate to German: How are you?",
-      answer: 'Wie geht es dir'
+      type: "mcq",
+      question: "What does 'Freund' mean?",
+      options: ["Friend", "Family", "School", "Book"],
+      answer: "Friend"
     },
     {
-      type: 'mcq',
-      question: "'Ich heiße' means?",
-      options: ['I eat', 'I walk', 'My name is', 'Good day'],
-      answer: 'My name is'
+      type: "fill",
+      question: "Translate 'Family' to German",
+      answer: "Familie"
     },
     {
-      type: 'fill',
-      question: "Fill in the blank: Ich ____ Chaitanya.",
-      answer: 'heiße'
+      type: "mcq",
+      question: "What is the German word for 'School'?",
+      options: ["Schule", "Stuhl", "Tisch", "Auto"],
+      answer: "Schule"
     },
     {
-      type: 'mcq',
-      question: "'Guten Tag' means?",
-      options: ['Good afternoon', 'Hello', 'Good day', 'See you'],
-      answer: 'Good day'
+      type: "fill",
+      question: "Translate 'Where are you from?' to German",
+      answer: "Woher kommst du?"
     },
     {
-      type: 'fill',
-      question: "Translate: See you soon",
-      answer: 'Bis bald'
+      type: "mcq",
+      question: "What does 'Ich verstehe nicht' mean?",
+      options: ["I don't understand", "I am hungry", "I am tired", "I am happy"],
+      answer: "I don't understand"
+    },
+    {
+      type: "fill",
+      question: "Translate 'How old are you?' to German",
+      answer: "Wie alt bist du?"
+    },
+    {
+      type: "mcq",
+      question: "What is the German word for 'Book'?",
+      options: ["Buch", "Haus", "Auto", "Stuhl"],
+      answer: "Buch"
+    },
+    {
+      type: "fill",
+      question: "Translate 'I live in Berlin' to German",
+      answer: "Ich wohne in Berlin"
+    },
+    {
+      type: "mcq",
+      question: "What does 'Guten Tag' mean?",
+      options: ["Good day", "Good night", "Goodbye", "Good morning"],
+      answer: "Good day"
+    },
+    {
+      type: "fill",
+      question: "Translate 'See you tomorrow' to German",
+      answer: "Bis morgen"
     }
   ]
 };
 
+let currentLesson = "lesson1";
 let currentIndex = 0;
-let currentLesson = 'lesson1';
+let completedLessons = { lesson1: false, lesson2: false };
 
-window.onload = function () {
-  document.getElementById('lessonSelect').addEventListener('change', (e) => {
-    currentLesson = e.target.value;
-    currentIndex = 0;
-    renderQuestion();
-  });
+function loadLesson(lessonKey) {
+  if (lessonKey === "lesson2" && !completedLessons.lesson1) return;
 
-  document.getElementById('nextBtn').addEventListener('click', nextQuestion);
-
+  currentLesson = lessonKey;
+  currentIndex = 0;
+  document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+  document.querySelector(`.tab-btn[onclick="loadLesson('${lessonKey}')"]`).classList.add("active");
   renderQuestion();
-};
+}
 
 function renderQuestion() {
-  const container = document.getElementById('questionContainer');
-  container.innerHTML = '';
+  const container = document.getElementById("lessonContainer");
+  container.innerHTML = "";
 
-  const q = lessons[currentLesson][currentIndex];
-  const questionElem = document.createElement('p');
-  questionElem.textContent = q.question;
-  container.appendChild(questionElem);
+  const lesson = lessons[currentLesson];
+  if (currentIndex >= lesson.length) {
+    container.innerHTML = "<h3>🎉 Lesson Completed!</h3>";
+    completedLessons[currentLesson] = true;
 
-  if (q.type === 'mcq') {
+    if (currentLesson === "lesson1") {
+      const btn2 = document.getElementById("lesson2-btn");
+      btn2.disabled = false;
+      btn2.classList.remove("locked");
+    }
+    return;
+  }
+
+  const q = lesson[currentIndex];
+
+  const question = document.createElement("p");
+  question.textContent = q.question;
+  container.appendChild(question);
+
+  if (q.type === "mcq") {
     q.options.forEach(opt => {
-      const btn = document.createElement('button');
+      const btn = document.createElement("button");
       btn.textContent = opt;
-      btn.onclick = () => {
-        btn.className = opt === q.answer ? 'correct' : 'incorrect';
-      };
+      btn.className = "option-btn";
+      btn.onclick = () => handleAnswer(opt === q.answer, q.answer, btn);
       container.appendChild(btn);
-      container.appendChild(document.createElement('br'));
     });
-  } else if (q.type === 'fill') {
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = "Your answer";
-    input.style.margin = "10px";
+  } else if (q.type === "fill") {
+    const input = document.createElement("input");
+    const checkBtn = document.createElement("button");
+    checkBtn.textContent = "Check";
+    checkBtn.className = "check-btn";
+    checkBtn.onclick = () => handleAnswer(
+      input.value.trim().toLowerCase() === q.answer.toLowerCase(),
+      q.answer,
+      input
+    );
     container.appendChild(input);
-
-    const checkBtn = document.createElement('button');
-    checkBtn.textContent = 'Check';
-    checkBtn.onclick = () => {
-      input.className = input.value.trim().toLowerCase() === q.answer.toLowerCase() ? 'correct' : 'incorrect';
-    };
     container.appendChild(checkBtn);
   }
+
+  container.appendChild(document.createElement("br"));
 }
 
-function nextQuestion() {
-  if (currentIndex < lessons[currentLesson].length - 1) {
-    currentIndex++;
-    renderQuestion();
+function handleAnswer(isCorrect, correctAnswer, element) {
+  if (isCorrect) {
+    element.classList.add("correct");
+    confetti();
+    setTimeout(() => {
+      currentIndex++;
+      renderQuestion();
+    }, 800);
   } else {
-    alert('🎉 End of lesson!');
+    element.classList.add("incorrect");
+    alert("❌ Correct answer: " + correctAnswer);
+    setTimeout(() => {
+      currentIndex++;
+      renderQuestion();
+    }, 800);
   }
 }
+
+window.onload = () => loadLesson("lesson1");
