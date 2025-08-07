@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notes Section</title>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:600,400&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+    }
+    .notes-section {
+      max-width: 480px;
+      margin: 60px auto;
+      padding: 36px 32px 32px 32px;
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(80, 80, 120, 0.15);
+      text-align: center;
+      position: relative;
+    }
+    .notes-section h2 {
+      color: #5f27cd;
+      font-size: 2.1em;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+    .notes-section p {
+      color: #444;
+      font-size: 1.1em;
+      margin-bottom: 30px;
+    }
+    .notes-link {
+      display: inline-block;
+      padding: 14px 36px;
+      background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+      color: #fff;
+      font-weight: 600;
+      font-size: 1.15em;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(67, 233, 123, 0.15);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 12px;
+    }
+    .notes-link:hover {
+      background: linear-gradient(90deg, #38f9d7 0%, #43e97b 100%);
+      transform: translateY(-2px) scale(1.04);
+      box-shadow: 0 8px 24px rgba(67, 233, 123, 0.22);
+    }
+    .upload-label {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 10px 28px;
+      background: linear-gradient(90deg, #fa709a 0%, #fee140 100%);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .upload-label:hover {
+      background: linear-gradient(90deg, #fee140 0%, #fa709a 100%);
+      transform: scale(1.04);
+    }
+    #pdf-upload {
+      display: none;
+    }
+    .pdf-preview {
+      margin-top: 24px;
+      display: none;
+    }
+    .pdf-preview iframe {
+      width: 100%;
+      height: 400px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(80, 80, 120, 0.08);
+    }
+  </style>
+</head>
+<body>
+  <div class="notes-section">
+    <h2>📚 Download Notes</h2>
+    <p>Click below to view or download the provided notes PDF.<br>Or upload your own PDF to view it instantly.</p>
+    <a class="notes-link" href="german_notes.pdf" target="_blank">Open Notes PDF</a>
+    <br>
+    <label class="upload-label" for="pdf-upload">Upload Your PDF</label>
+    <input type="file" id="pdf-upload" accept="application/pdf">
+    <div class="pdf-preview" id="pdf-preview">
+      <h3 style="color:#5f27cd; margin-bottom:10px;">Preview:</h3>
+      <iframe id="pdf-frame"></iframe>
+    </div>
+  </div>
+  <script>
+    const upload = document.getElementById('pdf-upload');
+    const preview = document.getElementById('pdf-preview');
+    const frame = document.getElementById('pdf-frame');
+
+    upload.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file && file.type === "application/pdf") {
+        const url = URL.createObjectURL(file);
+        frame.src = url;
+        preview.style.display = "block";
+      } else {
+        preview.style.display = "none";
+        frame.src = "";
+        alert("Please select a valid PDF file.");
+      }
+    });
+  </script>
+</body>
+</html>
